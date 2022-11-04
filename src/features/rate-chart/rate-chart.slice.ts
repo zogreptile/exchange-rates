@@ -6,6 +6,7 @@ import { exchangeApi } from '../../api/exchange';
 import { Rates } from '../../api/exchange/models/rates';
 import { RootState } from '../../store/types';
 import { addNotification } from '../notifications/notifications.slice';
+import { incrementPreloaderList, decrementPreloaderList } from '../preloaders/preloaders.slice';
 
 const SLICE_NAME = 'rates';
 
@@ -15,20 +16,19 @@ export interface RatesState {
   dateFrom: StringifiedDateObject;
   dateTo: StringifiedDateObject;
   rates: Rates,
-  isFetching: boolean;
 };
 
 const initialState: RatesState = {
   dateFrom: sub(new Date(), { months: 1 }).toString(),
   dateTo: new Date().toString(),
   rates: {},
-  isFetching: false,
 };
 
 export const fetchRates = createAsyncThunk(
   `${SLICE_NAME}/getRates`,
   async function (_, thunkApi) {
     try {
+      thunkApi.dispatch(incrementPreloaderList());
       const { currencies, rates } = thunkApi.getState() as RootState;
 
       return await exchangeApi.getRates(
@@ -44,6 +44,8 @@ export const fetchRates = createAsyncThunk(
         type: 'error',
       }));
       return thunkApi.rejectWithValue(error);
+    } finally {
+      thunkApi.dispatch(decrementPreloaderList());
     }
   },
 );
@@ -61,11 +63,7 @@ export const ratesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchRates.pending, (state) => {
-        state.isFetching = true;
-      })
       .addCase(fetchRates.fulfilled, (state, action) => {
-        state.isFetching = false;
         state.rates = action.payload.rates;
       });
   }

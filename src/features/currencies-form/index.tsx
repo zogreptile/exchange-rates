@@ -43,7 +43,6 @@ export function CurrenciesForm() {
     currencyTo,
     amountFrom,
     amountTo,
-    isFetching,
   } = useAppSelector((state) => state.currencies);
 
   const getCurrentRate = () => {
@@ -76,7 +75,6 @@ export function CurrenciesForm() {
         size="small"
         value={amountFrom}
         onChange={handleChangeCurrencyAmountFrom}
-        disabled={isFetching}
         sx={{ width: '50%' }}
       />
 

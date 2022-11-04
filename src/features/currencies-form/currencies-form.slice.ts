@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { exchangeApi } from '../../api/exchange';
 import { RootState } from '../../store/types';
 import { addNotification } from '../notifications/notifications.slice';
+import { incrementPreloaderList, decrementPreloaderList } from '../preloaders/preloaders.slice';
 
 const SLICE_NAME = 'currencies';
 
@@ -12,7 +13,6 @@ export interface CurrenciesState {
   amountFrom: string;
   amountTo: string;
   rate: number;
-  isFetching: boolean;
 };
 
 const initialState: CurrenciesState = {
@@ -21,13 +21,13 @@ const initialState: CurrenciesState = {
   amountFrom: '1',
   amountTo: '',
   rate: 0,
-  isFetching: false,
 };
 
 export const fetchCurrentRate = createAsyncThunk(
   `${SLICE_NAME}/getCurrentRate`,
   async function (_, thunkApi) {
     try {
+      thunkApi.dispatch(incrementPreloaderList());
       const { currencies } = thunkApi.getState() as RootState;
 
       return await exchangeApi.getCurrentRate(
@@ -42,6 +42,8 @@ export const fetchCurrentRate = createAsyncThunk(
         type: 'error',
       }));
       return thunkApi.rejectWithValue(error);
+    } finally {
+      thunkApi.dispatch(decrementPreloaderList());
     }
   },
 );
@@ -65,16 +67,9 @@ export const currenciesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchCurrentRate.pending, (state) => {
-        state.isFetching = true;
-      })
       .addCase(fetchCurrentRate.fulfilled, (state, action) => {
-        state.isFetching = false;
         state.rate = action.payload.rate
         state.amountTo = action.payload.result.toString();
-      })
-      .addCase(fetchCurrentRate.rejected, (state) => {
-        state.isFetching = false;
       });
   }
 });
