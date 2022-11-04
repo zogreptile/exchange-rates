@@ -1,46 +1,57 @@
-# Getting Started with Create React App
+# Exchange Rates App
+Конвертер валют с визуализацией курса за последний год.
+<p align='center'>
+  <img src='./readme/app_screenshot.png?raw=true' width='987' height='auto' alt='App screenshot'>
+</p>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Версия окружения
+Работает как минимум с `Node.js v16.13.2`
 
-## Available Scripts
+## Используемые технологии
+- typescript
+- react
+- redux toolkit
+- material ui
+- recharts
+- date-fns
 
-In the project directory, you can run:
+## Структура папок и файлов
+```
+├── public/
+│   ├── favicon.ico
+│   └── index.html
+│
+└── src/                                # Исходники проекта
+    ├── api/                            # api-сервисы
+    │   ├── <API_SERVICE_NAME>/         # Реализация сервиса для конкретного бекенда
+    │   │   ├── models/                 # Модели запросов/ответов
+    │   │   └── index.ts                # Наследует базовый класс Fetcher
+    │   └── fetcher.ts                  # Базовый класс для cоздания сервисов
+    │
+    ├── common/                         # Общий код (стили, хуки, вспомогательные функции и пр.)
+    │
+    ├── features/                       # Фичи и связанная с ними редакс-логика
+    │   └── <FEATURE_NAME>/             # Директория фичи
+    │       ├── <FEATURE_NAME>.slice    # RTK-slice
+    │       └── index.ts                # Код компонента 
+    │
+    ├── store/                          # Конфигурация редакс-стора
+    │
+    ├── App.tsx/                        # Корневой компонент
+    │
+    └── index.tsx                       # Точка входа в приложение
+```
+
+## NPM-скрипты
+В качестве шаблона проекта используется [Create React App](https://github.com/facebook/create-react-app).\
+[Список всех скриптов из официальной документации](https://github.com/facebook/create-react-app#creating-an-app).
+
+### `npm install`
+Установка npm зависимостей.
 
 ### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Запуск приложения в режиме разработки.\
+Автоматически открывается [http://localhost:3000](http://localhost:3000) в браузере.
 
 ### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Сборка приложения для продакшена в папку `build`.
