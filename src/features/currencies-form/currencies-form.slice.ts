@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
 import { exchangeApi } from '../../api/exchange';
 import { RootState } from '../../store/types';
+import { addNotification } from '../notifications/notifications.slice';
 
 const SLICE_NAME = 'currencies';
 
@@ -35,6 +36,11 @@ export const fetchCurrentRate = createAsyncThunk(
         Number(currencies.amountFrom),
       );
     } catch (error) {
+      thunkApi.dispatch(addNotification({
+        id: Date.now(),
+        message: `${error}`,
+        type: 'error',
+      }));
       return thunkApi.rejectWithValue(error);
     }
   },

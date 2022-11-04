@@ -5,6 +5,7 @@ import format from 'date-fns/format';
 import { exchangeApi } from '../../api/exchange';
 import { Rates } from '../../api/exchange/models/rates';
 import { RootState } from '../../store/types';
+import { addNotification } from '../notifications/notifications.slice';
 
 const SLICE_NAME = 'rates';
 
@@ -37,6 +38,11 @@ export const fetchRates = createAsyncThunk(
         format(new Date(rates.dateTo), 'yyyy-MM-dd'),
       );
     } catch (error) {
+      thunkApi.dispatch(addNotification({
+        id: Date.now(),
+        message: `${error}`,
+        type: 'error',
+      }));
       return thunkApi.rejectWithValue(error);
     }
   },
