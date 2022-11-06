@@ -18,9 +18,9 @@ const PreloaderBackdrop = styled.div`
 `;
 
 export function Preloader() {
-  const preloaders = useAppSelector(state => state.preloaders);
+  const { count } = useAppSelector(state => state.preloaders);
 
-  if (!preloaders.length) return null;
+  if (!count) return null;
 
   return (
     <PreloaderBackdrop>

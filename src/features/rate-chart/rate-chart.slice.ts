@@ -6,7 +6,7 @@ import { exchangeApi } from '../../api/exchange';
 import { Rates } from '../../api/exchange/models/rates';
 import { RootState } from '../../store/types';
 import { addNotification } from '../notifications/notifications.slice';
-import { incrementPreloaderList, decrementPreloaderList } from '../preloaders/preloaders.slice';
+import { incrementPreloaders, decrementPreloaders } from '../preloaders/preloaders.slice';
 
 const SLICE_NAME = 'rates';
 
@@ -28,7 +28,7 @@ export const fetchRates = createAsyncThunk(
   `${SLICE_NAME}/getRates`,
   async function (_, thunkApi) {
     try {
-      thunkApi.dispatch(incrementPreloaderList());
+      thunkApi.dispatch(incrementPreloaders());
       const { currencies, rates } = thunkApi.getState() as RootState;
 
       return await exchangeApi.getRates(
@@ -41,7 +41,7 @@ export const fetchRates = createAsyncThunk(
       thunkApi.dispatch(addNotification({ message: `${error}` }));
       return thunkApi.rejectWithValue(error);
     } finally {
-      thunkApi.dispatch(decrementPreloaderList());
+      thunkApi.dispatch(decrementPreloaders());
     }
   },
 );

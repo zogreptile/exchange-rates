@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { exchangeApi } from '../../api/exchange';
 import { RootState } from '../../store/types';
 import { addNotification } from '../notifications/notifications.slice';
-import { incrementPreloaderList, decrementPreloaderList } from '../preloaders/preloaders.slice';
+import { incrementPreloaders, decrementPreloaders } from '../preloaders/preloaders.slice';
 
 const SLICE_NAME = 'currencies';
 
@@ -27,7 +27,7 @@ export const fetchCurrentRate = createAsyncThunk(
   `${SLICE_NAME}/getCurrentRate`,
   async function (_, thunkApi) {
     try {
-      thunkApi.dispatch(incrementPreloaderList());
+      thunkApi.dispatch(incrementPreloaders());
       const { currencies } = thunkApi.getState() as RootState;
 
       return await exchangeApi.getCurrentRate(
@@ -39,7 +39,7 @@ export const fetchCurrentRate = createAsyncThunk(
       thunkApi.dispatch(addNotification({ message: `${error}` }));
       return thunkApi.rejectWithValue(error);
     } finally {
-      thunkApi.dispatch(decrementPreloaderList());
+      thunkApi.dispatch(decrementPreloaders());
     }
   },
 );
