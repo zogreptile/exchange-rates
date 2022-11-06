@@ -3,10 +3,15 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const SLICE_NAME = 'notifications';
 
-export interface INotificationItem {
+interface INotificationItem {
   id: number;
   message: string;
   type: AlertColor;
+}
+
+export interface INotificationPayload {
+  message: string;
+  type?: AlertColor;
 }
 
 const initialState: INotificationItem[] = [];
@@ -15,8 +20,12 @@ export const notificationsSlice = createSlice({
   name: SLICE_NAME,
   initialState,
   reducers: {
-    addNotification: (state, action: PayloadAction<INotificationItem>) => {
-      state.push(action.payload);
+    addNotification: (state, action: PayloadAction<INotificationPayload>) => {
+      state.push({
+        id: Date.now(),
+        message: action.payload.message,
+        type: action.payload.type || 'error',
+      });
     },
     removeNotification: (state, action: PayloadAction<number>) => {
       const removeIndex = state.findIndex(item => item.id === action.payload);

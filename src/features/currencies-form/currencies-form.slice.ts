@@ -36,11 +36,7 @@ export const fetchCurrentRate = createAsyncThunk(
         Number(currencies.amountFrom),
       );
     } catch (error) {
-      thunkApi.dispatch(addNotification({
-        id: Date.now(),
-        message: `${error}`,
-        type: 'error',
-      }));
+      thunkApi.dispatch(addNotification({ message: `${error}` }));
       return thunkApi.rejectWithValue(error);
     } finally {
       thunkApi.dispatch(decrementPreloaderList());

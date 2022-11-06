@@ -38,11 +38,7 @@ export const fetchRates = createAsyncThunk(
         format(new Date(rates.dateTo), 'yyyy-MM-dd'),
       );
     } catch (error) {
-      thunkApi.dispatch(addNotification({
-        id: Date.now(),
-        message: `${error}`,
-        type: 'error',
-      }));
+      thunkApi.dispatch(addNotification({ message: `${error}` }));
       return thunkApi.rejectWithValue(error);
     } finally {
       thunkApi.dispatch(decrementPreloaderList());
