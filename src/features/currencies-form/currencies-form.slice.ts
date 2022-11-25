@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
-import { exchangeApi } from '../../api/exchange';
+import { exchangeApi } from '../../api/exchange/exchange-api';
 import { RootState } from '../../store/types';
 import { addNotification } from '../notifications/notifications.slice';
 import { incrementPreloaders, decrementPreloaders } from '../preloaders/preloaders.slice';

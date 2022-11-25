@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import sub from 'date-fns/sub';
 import format from 'date-fns/format';
 
-import { exchangeApi } from '../../api/exchange';
+import { exchangeApi } from '../../api/exchange/exchange-api';
 import { Rates } from '../../api/exchange/models/rates';
 import { RootState } from '../../store/types';
 import { addNotification } from '../notifications/notifications.slice';
