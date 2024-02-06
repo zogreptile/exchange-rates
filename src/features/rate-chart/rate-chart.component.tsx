@@ -2,13 +2,21 @@ import { useEffect } from "react";
 import styled from "@emotion/styled";
 import sub from "date-fns/sub";
 
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import TextField, { } from "@mui/material/TextField";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import TextField from "@mui/material/TextField";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setDateFrom, setDateTo, fetchRates } from './rate-chart.slice';
-import { getRatesChartData } from './utils';
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { setDateFrom, setDateTo, fetchRates } from "./rate-chart.slice";
+import { getRatesChartData } from "./utils";
 
 const DatePickersWrapper = styled.div`
   margin-bottom: 20px;
@@ -30,25 +38,27 @@ const RateValue = styled.div`
 
 export function RateChart() {
   const dispatch = useAppDispatch();
-  const { currencyFrom, currencyTo, rate } = useAppSelector((state) => state.currencies);
+  const { currencyFrom, currencyTo, rate } = useAppSelector(
+    (state) => state.currencies,
+  );
   const { dateFrom, dateTo, rates } = useAppSelector((state) => state.rates);
 
   const getRates = () => {
     if (!currencyFrom || !currencyTo || !dateFrom || !dateTo) return;
     dispatch(fetchRates());
-  }
+  };
 
   useEffect(getRates, [currencyFrom, currencyTo, dateFrom, dateTo, dispatch]);
 
   const changeDateFrom = (value: Date | null) => {
     if (!value) return;
     dispatch(setDateFrom(value.toString()));
-  }
+  };
 
   const changeDateTo = (value: Date | null) => {
     if (!value) return;
     dispatch(setDateTo(value.toString()));
-  }
+  };
 
   return (
     <>
@@ -57,14 +67,10 @@ export function RateChart() {
           label="From"
           value={dateFrom}
           onChange={changeDateFrom}
-          inputFormat='dd.MM.yyyy'
+          inputFormat="dd.MM.yyyy"
           minDate={sub(new Date(), { days: 365 })}
           renderInput={(params) => (
-            <TextField
-              size='small'
-              sx={{ width: '230px' }}
-              {...params}
-            />
+            <TextField size="small" sx={{ width: "230px" }} {...params} />
           )}
         />
 
@@ -72,14 +78,10 @@ export function RateChart() {
           label="To"
           value={dateTo}
           onChange={changeDateTo}
-          inputFormat='dd.MM.yyyy'
+          inputFormat="dd.MM.yyyy"
           maxDate={new Date()}
           renderInput={(params) => (
-            <TextField
-              size='small'
-              sx={{ width: '230px' }}
-              {...params}
-            />
+            <TextField size="small" sx={{ width: "230px" }} {...params} />
           )}
         />
       </DatePickersWrapper>
@@ -108,8 +110,8 @@ export function RateChart() {
           </AreaChart>
         </ResponsiveContainer>
 
-        <RateValue>{ rate }</RateValue>
+        <RateValue>{rate}</RateValue>
       </ChartContainer>
     </>
-  )
+  );
 }

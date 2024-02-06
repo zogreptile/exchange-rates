@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
-const SLICE_NAME = 'preloaders';
+const SLICE_NAME = "preloaders";
 
 export const preloadersSlice = createSlice({
   name: SLICE_NAME,
@@ -12,15 +12,13 @@ export const preloadersSlice = createSlice({
       state.count += 1;
     },
     decrementPreloaders: (state) => {
-      if (state.count === 0) return; 
+      if (state.count === 0) return;
       state.count -= 1;
     },
   },
 });
 
-export const {
-  incrementPreloaders,
-  decrementPreloaders,
-} = preloadersSlice.actions;
+export const { incrementPreloaders, decrementPreloaders } =
+  preloadersSlice.actions;
 
 export const preloadersReducer = preloadersSlice.reducer;

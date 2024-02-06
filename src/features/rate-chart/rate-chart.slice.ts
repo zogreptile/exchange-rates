@@ -1,22 +1,25 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import sub from 'date-fns/sub';
-import format from 'date-fns/format';
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import sub from "date-fns/sub";
+import format from "date-fns/format";
 
-import { exchangeApi } from '../../api/exchange/exchange-api';
-import { Rates } from '../../api/exchange/models/rates';
-import { RootState } from '../../store/types';
-import { addNotification } from '../notifications/notifications.slice';
-import { incrementPreloaders, decrementPreloaders } from '../preloaders/preloaders.slice';
+import { exchangeApi } from "../../api/exchange/exchange-api";
+import { Rates } from "../../api/exchange/models/rates";
+import { RootState } from "../../store/types";
+import { addNotification } from "../notifications/notifications.slice";
+import {
+  incrementPreloaders,
+  decrementPreloaders,
+} from "../preloaders/preloaders.slice";
 
-const SLICE_NAME = 'rates';
+const SLICE_NAME = "rates";
 
 type StringifiedDateObject = string;
 
 export interface RatesState {
   dateFrom: StringifiedDateObject;
   dateTo: StringifiedDateObject;
-  rates: Rates,
-};
+  rates: Rates;
+}
 
 const initialState: RatesState = {
   dateFrom: sub(new Date(), { months: 1 }).toString(),
@@ -34,8 +37,8 @@ export const fetchRates = createAsyncThunk(
       return await exchangeApi.getRates(
         currencies.currencyFrom,
         currencies.currencyTo,
-        format(new Date(rates.dateFrom), 'yyyy-MM-dd'),
-        format(new Date(rates.dateTo), 'yyyy-MM-dd'),
+        format(new Date(rates.dateFrom), "yyyy-MM-dd"),
+        format(new Date(rates.dateTo), "yyyy-MM-dd"),
       );
     } catch (error) {
       thunkApi.dispatch(addNotification({ message: `${error}` }));
@@ -58,16 +61,12 @@ export const ratesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchRates.fulfilled, (state, action) => {
-        state.rates = action.payload.rates;
-      });
-  }
+    builder.addCase(fetchRates.fulfilled, (state, action) => {
+      state.rates = action.payload.rates;
+    });
+  },
 });
 
-export const {
-  setDateFrom,
-  setDateTo,
-} = ratesSlice.actions;
+export const { setDateFrom, setDateTo } = ratesSlice.actions;
 
 export const ratesReducer = ratesSlice.reducer;

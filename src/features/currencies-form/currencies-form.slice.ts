@@ -1,11 +1,14 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
-import { exchangeApi } from '../../api/exchange/exchange-api';
-import { RootState } from '../../store/types';
-import { addNotification } from '../notifications/notifications.slice';
-import { incrementPreloaders, decrementPreloaders } from '../preloaders/preloaders.slice';
+import { exchangeApi } from "../../api/exchange/exchange-api";
+import { RootState } from "../../store/types";
+import { addNotification } from "../notifications/notifications.slice";
+import {
+  incrementPreloaders,
+  decrementPreloaders,
+} from "../preloaders/preloaders.slice";
 
-const SLICE_NAME = 'currencies';
+const SLICE_NAME = "currencies";
 
 export interface CurrenciesState {
   currencyFrom: string;
@@ -13,13 +16,13 @@ export interface CurrenciesState {
   amountFrom: string;
   amountTo: string;
   rate: number;
-};
+}
 
 const initialState: CurrenciesState = {
-  currencyFrom: 'USD',
-  currencyTo: 'RUB',
-  amountFrom: '1',
-  amountTo: '',
+  currencyFrom: "USD",
+  currencyTo: "RUB",
+  amountFrom: "1",
+  amountTo: "",
   rate: 0,
 };
 
@@ -62,19 +65,14 @@ export const currenciesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchCurrentRate.fulfilled, (state, action) => {
-        state.rate = action.payload.rate
-        state.amountTo = action.payload.result.toString();
-      });
-  }
+    builder.addCase(fetchCurrentRate.fulfilled, (state, action) => {
+      state.rate = action.payload.rate;
+      state.amountTo = action.payload.result.toString();
+    });
+  },
 });
 
-export const {
-  setCurrencyFrom,
-  setCurrencyTo,
-  setAmountFrom,
-  setAmountTo,
-} = currenciesSlice.actions;
+export const { setCurrencyFrom, setCurrencyTo, setAmountFrom, setAmountTo } =
+  currenciesSlice.actions;
 
 export const currenciesReducer = currenciesSlice.reducer;

@@ -1,4 +1,4 @@
-export function noop() {};
+export function noop() {}
 
 export function getUnixTimestamp() {
   return Math.floor(Date.now() / 1000);

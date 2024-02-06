@@ -1,7 +1,7 @@
-import { AlertColor } from '@mui/material';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AlertColor } from "@mui/material";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const SLICE_NAME = 'notifications';
+const SLICE_NAME = "notifications";
 
 interface INotificationItem {
   id: number;
@@ -24,19 +24,17 @@ export const notificationsSlice = createSlice({
       state.push({
         id: Date.now(),
         message: action.payload.message,
-        type: action.payload.type || 'error',
+        type: action.payload.type || "error",
       });
     },
     removeNotification: (state, action: PayloadAction<number>) => {
-      const removeIndex = state.findIndex(item => item.id === action.payload);
+      const removeIndex = state.findIndex((item) => item.id === action.payload);
       if (removeIndex !== -1) state.splice(removeIndex, 1);
     },
   },
 });
 
-export const {
-  addNotification,
-  removeNotification,
-} = notificationsSlice.actions;
+export const { addNotification, removeNotification } =
+  notificationsSlice.actions;
 
 export const notificationsReducer = notificationsSlice.reducer;

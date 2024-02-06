@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 
-import CircularProgress from '@mui/material/CircularProgress';
+import CircularProgress from "@mui/material/CircularProgress";
 
-import { useAppSelector } from '../../store/hooks';
+import { useAppSelector } from "../../store/hooks";
 
 const PreloaderBackdrop = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ const PreloaderBackdrop = styled.div`
 `;
 
 export function Preloader() {
-  const { count } = useAppSelector(state => state.preloaders);
+  const { count } = useAppSelector((state) => state.preloaders);
 
   if (!count) return null;
 
@@ -26,5 +26,5 @@ export function Preloader() {
     <PreloaderBackdrop>
       <CircularProgress />
     </PreloaderBackdrop>
-  )
+  );
 }

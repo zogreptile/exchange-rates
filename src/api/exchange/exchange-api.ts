@@ -1,24 +1,21 @@
-import { getUnixTimestamp } from '../../common/utils';
-import { Fetcher } from '../fetcher';
-import { IRatesResponse } from './models/rates';
+import { getUnixTimestamp } from "../../common/utils";
+import { Fetcher } from "../fetcher";
+import { IRatesResponse } from "./models/rates";
 import {
   ICurrentRateResponse,
   ICachedRateInfo,
   ICurrentRate,
   convertCurrentRateResponse,
-} from './models/current-rate';
+} from "./models/current-rate";
 
 class ExchangeApi extends Fetcher {
   constructor() {
-    super(
-      'https://api.apilayer.com/exchangerates_data',
-      {
-        redirect: 'follow',
-        headers: {
-          'apiKey': 'LaFwyo7IDVtlCKAI4peYIhbYcJKmethw',
-        },
+    super("https://api.apilayer.com/exchangerates_data", {
+      redirect: "follow",
+      headers: {
+        apiKey: "LaFwyo7IDVtlCKAI4peYIhbYcJKmethw",
       },
-    );
+    });
   }
 
   private CURRENT_RATE_CACHE_EXPIRATION_TIME = 3600;
@@ -36,7 +33,7 @@ class ExchangeApi extends Fetcher {
       end_date: dateEnd,
     };
 
-    return this.get('/timeseries', { params });
+    return this.get("/timeseries", { params });
   }
 
   getCurrentRate(
@@ -49,7 +46,9 @@ class ExchangeApi extends Fetcher {
 
     if (cachedRateInfo) {
       const rateInfo: ICachedRateInfo = JSON.parse(cachedRateInfo);
-      const isUpToDate = getUnixTimestamp() - Number(rateInfo.timestamp) < this.CURRENT_RATE_CACHE_EXPIRATION_TIME;
+      const isUpToDate =
+        getUnixTimestamp() - Number(rateInfo.timestamp) <
+        this.CURRENT_RATE_CACHE_EXPIRATION_TIME;
 
       if (isUpToDate) {
         return Promise.resolve({
@@ -65,13 +64,15 @@ class ExchangeApi extends Fetcher {
       amount,
     };
 
-    return this
-      .get<ICurrentRateResponse>('/convert', { params })
+    return this.get<ICurrentRateResponse>("/convert", { params })
       .then((response) => {
-        localStorage.setItem(currenciesCode, JSON.stringify({
-          rate: response.info.rate,
-          timestamp: response.info.timestamp,
-        }));
+        localStorage.setItem(
+          currenciesCode,
+          JSON.stringify({
+            rate: response.info.rate,
+            timestamp: response.info.timestamp,
+          }),
+        );
 
         return response;
       })

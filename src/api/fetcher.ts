@@ -1,5 +1,5 @@
 type ParamsType = Record<string, string | number | boolean>;
-type RequestType = RequestInit & { params?: ParamsType }
+type RequestType = RequestInit & { params?: ParamsType };
 
 export class Fetcher {
   constructor(
@@ -7,13 +7,11 @@ export class Fetcher {
     public defaultRequestOptions: RequestInit = {},
   ) {}
 
-  private async request<TResponse>(url: string = '', options: RequestType = {}): Promise<TResponse> {
-    const {
-      headers = {},
-      method = 'GET',
-      params,
-      ...restOptions
-    } = options;
+  private async request<TResponse>(
+    url: string = "",
+    options: RequestType = {},
+  ): Promise<TResponse> {
+    const { headers = {}, method = "GET", params, ...restOptions } = options;
 
     const reqOptions: RequestInit = {
       method,
@@ -25,18 +23,23 @@ export class Fetcher {
     };
 
     const queryParams = this.stringifyParams(params);
-    const response = await fetch(`${this.baseUrl}${url}${queryParams}`, reqOptions);
+    const response = await fetch(
+      `${this.baseUrl}${url}${queryParams}`,
+      reqOptions,
+    );
 
     return this.handleResponse<TResponse>(response);
   }
 
-  private async handleResponse<TResponse>(response: Response): Promise<TResponse> {
+  private async handleResponse<TResponse>(
+    response: Response,
+  ): Promise<TResponse> {
     const text = await response.text();
     const data = text && JSON.parse(text);
-    
+
     if (!response.ok) {
-      console.error('handleResponse error:', data || response);
-      const error: string = (data?.error?.message) || response.statusText;
+      console.error("handleResponse error:", data || response);
+      const error: string = data?.error?.message || response.statusText;
       return Promise.reject(error);
     }
 
@@ -44,17 +47,19 @@ export class Fetcher {
   }
 
   public stringifyParams(data?: ParamsType): string {
-    if (!data) return '';
+    if (!data) return "";
 
-    const params = Object
-      .entries(data)
+    const params = Object.entries(data)
       .map(([param, value]) => `${param}=${value}`)
-      .join('&');
+      .join("&");
 
     return `?${params}`;
   }
 
-  public get<TResponse>(url: string, options: RequestType = {}): Promise<TResponse> {
-    return this.request<TResponse>(url, { method: 'GET', ...options });
+  public get<TResponse>(
+    url: string,
+    options: RequestType = {},
+  ): Promise<TResponse> {
+    return this.request<TResponse>(url, { method: "GET", ...options });
   }
 }

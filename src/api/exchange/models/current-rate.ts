@@ -4,7 +4,7 @@ export interface ICurrentRateResponse {
     from: string;
     to: string;
     amount: number;
-  },
+  };
   info: {
     timestamp: number;
     rate: number;
@@ -23,9 +23,11 @@ export interface ICurrentRate {
   rate: number;
 }
 
-export function convertCurrentRateResponse(response: ICurrentRateResponse): ICurrentRate {
+export function convertCurrentRateResponse(
+  response: ICurrentRateResponse,
+): ICurrentRate {
   return {
     result: response.result,
     rate: response.info.rate,
-  }
+  };
 }

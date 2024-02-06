@@ -9,4 +9,4 @@ export interface IRatesResponse {
   end_date: string; // yyyy-mm-dd
   base: string;
   rates: Rates;
-};
+}

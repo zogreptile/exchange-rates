@@ -1,19 +1,19 @@
 import styled from "@emotion/styled";
 
 import TextField from "@mui/material/TextField";
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
-import { isStringifiedNumber, noop } from '../../common/utils';
-import { useDebouncedEffect } from '../../common/hooks';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { isStringifiedNumber, noop } from "../../common/utils";
+import { useDebouncedEffect } from "../../common/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   setCurrencyFrom,
   setCurrencyTo,
   setAmountFrom,
   setAmountTo,
   fetchCurrentRate,
-} from './currencies-form.slice';
+} from "./currencies-form.slice";
 
 interface ISelectOption {
   value: string;
@@ -21,12 +21,12 @@ interface ISelectOption {
 }
 
 const currenciesOptions: ISelectOption[] = [
-  { value: 'USD', label: 'US Dollar' },
-  { value: 'EUR', label: 'Euro' },
-  { value: 'RUB', label: 'Ruble' },
-  { value: 'JPY', label: 'Japanese Yen' },
-  { value: 'CNY', label: 'Chinese Yuan' },
-  { value: 'BTC', label: 'Bitcoin' },
+  { value: "USD", label: "US Dollar" },
+  { value: "EUR", label: "Euro" },
+  { value: "RUB", label: "Ruble" },
+  { value: "JPY", label: "Japanese Yen" },
+  { value: "CNY", label: "Chinese Yuan" },
+  { value: "BTC", label: "Bitcoin" },
 ];
 
 const FieldsWrapper = styled.div`
@@ -38,31 +38,34 @@ const FieldsWrapper = styled.div`
 
 export function CurrenciesForm() {
   const dispatch = useAppDispatch();
-  const {
-    currencyFrom,
-    currencyTo,
-    amountFrom,
-    amountTo,
-  } = useAppSelector((state) => state.currencies);
+  const { currencyFrom, currencyTo, amountFrom, amountTo } = useAppSelector(
+    (state) => state.currencies,
+  );
 
   const getCurrentRate = () => {
     if (!currencyFrom || !currencyTo || !amountFrom) return;
     dispatch(fetchCurrentRate());
   };
 
-  useDebouncedEffect(getCurrentRate, [currencyFrom, currencyTo, amountFrom, dispatch], 500);
+  useDebouncedEffect(
+    getCurrentRate,
+    [currencyFrom, currencyTo, amountFrom, dispatch],
+    500,
+  );
 
   const handleChangeCurrencyFrom = (event: SelectChangeEvent) => {
-    dispatch(setCurrencyFrom(event.target.value))
+    dispatch(setCurrencyFrom(event.target.value));
   };
 
   const handleChangeCurrencyTo = (event: SelectChangeEvent) => {
     dispatch(setCurrencyTo(event.target.value));
   };
 
-  const handleChangeCurrencyAmountFrom = (event: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChangeCurrencyAmountFrom = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ): void => {
     if (!isStringifiedNumber(event.target.value)) return;
-    if (!event.target.value) dispatch(setAmountTo(''));
+    if (!event.target.value) dispatch(setAmountTo(""));
 
     dispatch(setAmountFrom(event.target.value));
   };
@@ -75,21 +78,23 @@ export function CurrenciesForm() {
         size="small"
         value={amountFrom}
         onChange={handleChangeCurrencyAmountFrom}
-        sx={{ width: '50%' }}
+        sx={{ width: "50%" }}
       />
 
       <Select
         id="from-currency"
         value={currencyFrom}
-        size='small'
+        size="small"
         onChange={handleChangeCurrencyFrom}
-        sx={{ width: '50%' }}
+        sx={{ width: "50%" }}
       >
-        {currenciesOptions.filter(({ value }) => value !== currencyTo).map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
+        {currenciesOptions
+          .filter(({ value }) => value !== currencyTo)
+          .map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
       </Select>
 
       <TextField
@@ -99,8 +104,8 @@ export function CurrenciesForm() {
         value={amountTo}
         onChange={noop}
         sx={{
-          width: '50%',
-          pointerEvents: 'none',
+          width: "50%",
+          pointerEvents: "none",
         }}
       />
 
@@ -109,14 +114,16 @@ export function CurrenciesForm() {
         value={currencyTo}
         size="small"
         onChange={handleChangeCurrencyTo}
-        sx={{ width: '50%' }}
+        sx={{ width: "50%" }}
       >
-        {currenciesOptions.filter(({ value }) => value !== currencyFrom).map((option) => (
-          <MenuItem key={option.value} value={option.value}>
-            {option.label}
-          </MenuItem>
-        ))}
+        {currenciesOptions
+          .filter(({ value }) => value !== currencyFrom)
+          .map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
       </Select>
     </FieldsWrapper>
-  )
+  );
 }
