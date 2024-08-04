@@ -9,7 +9,7 @@ interface INotificationItem {
   type: AlertColor;
 }
 
-export interface INotificationPayload {
+interface INotificationPayload {
   message: string;
   type?: AlertColor;
 }

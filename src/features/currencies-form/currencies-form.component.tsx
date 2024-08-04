@@ -5,15 +5,14 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
 import { isStringifiedNumber, noop } from "../../common/utils";
-import { useDebouncedEffect } from "../../common/hooks";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   setCurrencyFrom,
   setCurrencyTo,
   setAmountFrom,
   setAmountTo,
-  fetchCurrentRate,
 } from "./currencies-form.slice";
+import { useFetchCurrentRate } from "./currencies-form.hooks";
 
 interface ISelectOption {
   value: string;
@@ -37,20 +36,11 @@ const FieldsWrapper = styled.div`
 `;
 
 export function CurrenciesForm() {
+  useFetchCurrentRate();
+
   const dispatch = useAppDispatch();
   const { currencyFrom, currencyTo, amountFrom, amountTo } = useAppSelector(
     (state) => state.currencies,
-  );
-
-  const getCurrentRate = () => {
-    if (!currencyFrom || !currencyTo || !amountFrom) return;
-    dispatch(fetchCurrentRate());
-  };
-
-  useDebouncedEffect(
-    getCurrentRate,
-    [currencyFrom, currencyTo, amountFrom, dispatch],
-    500,
   );
 
   const handleChangeCurrencyFrom = (event: SelectChangeEvent) => {

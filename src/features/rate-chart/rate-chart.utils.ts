@@ -3,7 +3,7 @@ import { RateDate, RateValue, Rates } from "../../api/exchange/models/rates";
 
 type RatesChartDayData = { name: string } | { [currencyFrom: string]: number };
 
-export function getRatesChartData(
+export function prepareRatesChartData(
   input: Rates,
   currencyFrom: string,
   currencyTo: string,

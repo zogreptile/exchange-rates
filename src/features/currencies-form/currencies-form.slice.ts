@@ -2,23 +2,12 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 import { exchangeApi } from "../../api/exchange/exchange-api";
 import { RootState } from "../../store/types";
-import { addNotification } from "../notifications/notifications.slice";
-import {
-  incrementPreloaders,
-  decrementPreloaders,
-} from "../preloaders/preloaders.slice";
+import { addNotification } from "../notifications";
+import { incrementPreloaders, decrementPreloaders } from "../preloaders";
 
 const SLICE_NAME = "currencies";
 
-export interface CurrenciesState {
-  currencyFrom: string;
-  currencyTo: string;
-  amountFrom: string;
-  amountTo: string;
-  rate: number;
-}
-
-const initialState: CurrenciesState = {
+const initialState = {
   currencyFrom: "USD",
   currencyTo: "RUB",
   amountFrom: "1",
