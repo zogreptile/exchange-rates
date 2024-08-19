@@ -4,6 +4,7 @@ import { intervalReducer } from "../features/interval-form";
 import { ratesReducer } from "../features/rate-chart";
 import { notificationsReducer } from "../features/notifications";
 import { preloadersReducer } from "../features/preloaders";
+import { mocksSwitchReducer } from "../features/mocks-switch";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     rates: ratesReducer,
     notifications: notificationsReducer,
     preloaders: preloadersReducer,
+    mocks: mocksSwitchReducer,
   },
 });

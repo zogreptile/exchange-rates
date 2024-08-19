@@ -1,14 +1,14 @@
-import Container from "@mui/material/Container";
+import { Layout } from "../common/layout";
 import { CurrenciesForm } from "../features/currencies-form";
 import { IntervalForm } from "../features/interval-form";
 import { RateChart } from "../features/rate-chart";
 
-export function IndexPage() {
+export function MainPage() {
   return (
-    <Container sx={{ paddingTop: "30px" }}>
+    <Layout>
       <CurrenciesForm />
       <IntervalForm />
       <RateChart />
-    </Container>
+    </Layout>
   );
 }

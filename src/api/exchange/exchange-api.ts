@@ -10,7 +10,8 @@ import {
 
 class ExchangeApi extends Fetcher {
   constructor() {
-    super("https://api.apilayer.com/exchangerates_data", {
+    // super("https://api.apilayer.com/exchangerates_data", {
+    super("https://api.apilayer.test/exchangerates_data", {
       redirect: "follow",
       headers: {
         apiKey: "LaFwyo7IDVtlCKAI4peYIhbYcJKmethw",
